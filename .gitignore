@@ -1,0 +1,39 @@
+# Results — models and logs are large, only best_model.zip and results JSON tracked
+results/*/models/
+results/*/logs/
+
+# Legacy root-level artifacts
+models/
+/experiment_results.json
+/run_experiments.py
+/run_remaining.py
+
+# Training logs (root level)
+logs/
+!logs/.gitkeep
+
+# Videos
+videos/
+!videos/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TensorBoard
+runs/

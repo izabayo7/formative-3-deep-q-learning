@@ -1,0 +1,7 @@
+stable-baselines3[extra]
+gymnasium[atari]
+ale-py
+autorom
+shimmy>=0.2.1
+tensorboard
+opencv-python

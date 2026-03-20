@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "lr": 0.0001,
+    "gamma": 0.99,
+    "batch_size": 32,
+    "eps_start": 1.0,
+    "eps_end": 0.05,
+    "eps_decay": 0.1,
+    "mean_reward": 342.5,
+    "std_reward": 60.71
+  },
+  {
+    "id": 2,
+    "lr": 0.0005,
+    "gamma": 0.99,
+    "batch_size": 32,
+    "eps_start": 1.0,
+    "eps_end": 0.05,
+    "eps_decay": 0.1,
+    "mean_reward": 423.0,
+    "std_reward": 167.57
+  },
+  {
+    "id": 3,
+    "lr": 0.001,
+    "gamma": 0.99,
+    "batch_size": 64,
+    "eps_start": 1.0,
+    "eps_end": 0.01,
+    "eps_decay": 0.1,
+    "mean_reward": 340.5,
+    "std_reward": 186.47
+  },
+  {
+    "id": 4,
+    "lr": 0.0001,
+    "gamma": 0.95,
+    "batch_size": 32,
+    "eps_start": 1.0,
+    "eps_end": 0.05,
+    "eps_decay": 0.15,
+    "mean_reward": 303.0,
+    "std_reward": 153.94
+  },
+  {
+    "id": 5,
+    "lr": 0.0001,
+    "gamma": 0.99,
+    "batch_size": 128,
+    "eps_start": 1.0,
+    "eps_end": 0.1,
+    "eps_decay": 0.1,
+    "mean_reward": 266.0,
+    "std_reward": 61.75759062657804
+  },
+  {
+    "id": 6,
+    "lr": 5e-05,
+    "gamma": 0.99,
+    "batch_size": 32,
+    "eps_start": 1.0,
+    "eps_end": 0.05,
+    "eps_decay": 0.3,
+    "mean_reward": 242.5,
+    "std_reward": 128.67
+  },
+  {
+    "id": 7,
+    "lr": 0.0001,
+    "gamma": 0.97,
+    "batch_size": 64,
+    "eps_start": 1.0,
+    "eps_end": 0.01,
+    "eps_decay": 0.05,
+    "mean_reward": 402.0,
+    "std_reward": 190.06
+  },
+  {
+    "id": 8,
+    "lr": 1e-05,
+    "gamma": 0.999,
+    "batch_size": 32,
+    "eps_start": 1.0,
+    "eps_end": 0.05,
+    "eps_decay": 0.1,
+    "mean_reward": 142.5,
+    "std_reward": 58.79
+  },
+  {
+    "id": 9,
+    "lr": 0.0005,
+    "gamma": 0.97,
+    "batch_size": 64,
+    "eps_start": 1.0,
+    "eps_end": 0.1,
+    "eps_decay": 0.15,
+    "mean_reward": 321.0,
+    "std_reward": 112.02
+  },
+  {
+    "id": 10,
+    "lr": 0.0001,
+    "gamma": 0.99,
+    "batch_size": 32,
+    "eps_start": 1.0,
+    "eps_end": 0.01,
+    "eps_decay": 0.05,
+    "mean_reward": 180.5,
+    "std_reward": 78.18
+  }
+]

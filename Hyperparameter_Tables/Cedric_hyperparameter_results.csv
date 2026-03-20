@@ -1,0 +1,11 @@
+Experiment,Member Name,Policy,lr,gamma,batch_size,epsilon_start,epsilon_end,epsilon_decay,Mean Reward,Std Reward,Noted Behavior
+1,Cedric,CnnPolicy,1e-4,0.99,32,1.0,0.05,0.1,342.50,60.71,"Stable baseline performance; agent learned basic shooting and dodging patterns with consistent rewards"
+2,Cedric,CnnPolicy,5e-4,0.99,32,1.0,0.05,0.1,423.00,167.57,"BEST performer. Higher lr accelerated learning; agent actively targeted aliens and used cover effectively"
+3,Cedric,CnnPolicy,1e-3,0.99,64,1.0,0.01,0.1,340.50,186.47,"Aggressive lr caused instability (high variance); agent learned fast initially but inconsistent scores"
+4,Cedric,CnnPolicy,1e-4,0.95,32,1.0,0.05,0.15,303.00,153.94,"Lower gamma made agent short-sighted; focused on immediate aliens rather than strategic positioning"
+5,Cedric,CnnPolicy,1e-4,0.99,128,1.0,0.1,0.1,266.00,61.76,"Larger batch size smoothed updates but slowed learning; higher epsilon floor kept random actions"
+6,Cedric,CnnPolicy,5e-5,0.99,32,1.0,0.05,0.3,242.50,128.67,"Very slow learning due to low lr; long exploration phase (30%) meant too much random play"
+7,Cedric,CnnPolicy,1e-4,0.97,64,1.0,0.01,0.05,402.00,190.06,"Quick exploitation transition (5%); slightly reduced gamma still allowed good planning; 2nd best"
+8,Cedric,CnnPolicy,1e-5,0.999,32,1.0,0.05,0.1,142.50,58.79,"WORST performer. lr too low — barely learned; high gamma couldn't compensate for insufficient updates"
+9,Cedric,CnnPolicy,5e-4,0.97,64,1.0,0.1,0.15,321.00,112.02,"Good learning speed from higher lr; balanced but not optimal configuration"
+10,Cedric,CnnPolicy,1e-4,0.99,32,1.0,0.01,0.05,180.50,78.18,"Too-fast exploitation switch; agent committed to greedy policy before learning enough"
