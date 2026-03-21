@@ -12,7 +12,6 @@ import argparse
 import json
 import os
 import shutil
-
 import ale_py
 import gymnasium as gym
 import numpy as np
@@ -115,7 +114,7 @@ def main():
 
     # Print hyperparameter summary
     print("=" * 60)
-    print(f"DQN Training — SpaceInvaders")
+    print("DQN Training — SpaceInvaders")
     print(f"Member: {args.member}" + (f" | Experiment: {args.experiment}" if args.experiment else ""))
     print("=" * 60)
     print(f"  Policy:              {args.policy}")

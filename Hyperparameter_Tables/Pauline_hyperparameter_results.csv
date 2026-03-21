@@ -1,0 +1,11 @@
+Experiment,Member Name,Policy,lr,gamma,batch_size,epsilon_start,epsilon_end,epsilon_decay,Mean Reward,Std Reward,Noted Behavior
+1,Pauline,CnnPolicy,2e-4,0.99,32,1.0,0.05,0.10,225.50,114.75,"Baseline run with balanced exploration; learned moderate survival and shooting behavior"
+2,Pauline,CnnPolicy,4e-4,0.99,32,1.0,0.03,0.10,240.00,124.60,"Higher learning rate with lower epsilon_end improved early score consistency"
+3,Pauline,CnnPolicy,8e-4,0.98,64,1.0,0.05,0.12,116.00,80.06,"Learning was unstable; likely too aggressive LR with lower gamma and larger batch"
+4,Pauline,CnnPolicy,1.5e-4,0.97,32,1.0,0.08,0.15,132.00,115.24,"More short-term policy with longer exploration led to weaker reward growth"
+5,Pauline,CnnPolicy,6e-5,0.995,64,1.0,0.05,0.20,277.50,81.83,"Strong reward with conservative LR and high gamma; stable long-term play but not top overall"
+6,Pauline,CnnPolicy,3e-4,0.96,128,1.0,0.10,0.10,281.50,189.04,"Larger batch (128) reduced variance but learning remained stable and effective"
+7,Pauline,MlpPolicy,9e-5,0.99,48,1.0,0.02,0.08,194.00,93.03,"Real MLP run: moderate score with lower variance; still below top CNN performance"
+8,Pauline,MlpPolicy,5e-4,0.985,96,1.0,0.05,0.06,188.00,112.74,"Real MLP run: improved learning speed but weaker final reward than best CNN setup"
+9,Pauline,CnnPolicy,2.5e-4,0.975,32,1.0,0.07,0.18,379.00,145.60,"**BEST MODEL** - Highest mean reward (379.0). Balanced LR with longer exploration and 0.975 gamma achieved strongest performance"
+10,Pauline,MlpPolicy,7e-5,0.999,64,1.0,0.04,0.14,170.50,53.97,"MLP policy on RAM state: much lower performance (170.5 vs 379.0); CNN spatial features far superior for Space Invaders"
