@@ -191,10 +191,15 @@ Each team member runs 10 experiments with different hyperparameter configuration
 
 **Discussion:** CNN significantly outperformed MLP for Space Invaders. While the MLP trains faster per timestep (no convolution overhead), it struggles to extract meaningful features from the raw 128-byte RAM state. The RAM encodes game state in a compact but non-intuitive format — alien positions, player position, bullet states are all packed into bytes that don't naturally decompose into useful features for a simple feedforward network. The CNN, on the other hand, naturally captures spatial relationships (where aliens are relative to the player, bullet trajectories) through its convolutional filters. For visually-driven games like Space Invaders, CNN is the clear winner.
 
-## Gameplay Video
+## Gameplay Videos
 
-<!-- To record a gameplay video, run: python play.py --member Cedric --record --video-dir videos/ -->
-<!-- Then upload the video and link it here, or convert to gif -->
+### Cedric's Gameplay
+
+https://github.com/izabayo7/formative-3-deep-q-learning/blob/main/videos/Cedric_gameplay.mp4
+
+<!-- Other members: add your gameplay video below -->
+<!-- ### MemberName's Gameplay -->
+<!-- https://github.com/izabayo7/formative-3-deep-q-learning/blob/main/videos/MemberName_gameplay.mp4 -->
 
 ## Team Members
 
