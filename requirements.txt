@@ -5,3 +5,5 @@ autorom
 shimmy>=0.2.1
 tensorboard
 opencv-python
+matplotlib
+pandas

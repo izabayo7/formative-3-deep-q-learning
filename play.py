@@ -1,7 +1,7 @@
 """
 DQN Evaluation/Play Script for SpaceInvaders (ALE/SpaceInvaders-v5).
 
-Loads a trained DQN model and runs episodes with optional video recording.
+Loads a trained DQN model and runs episodes with GUI display.
 Supports per-member model loading via --member flag.
 """
 
@@ -16,7 +16,6 @@ gym.register_envs(ale_py)
 
 from stable_baselines3 import DQN
 from stable_baselines3.common.atari_wrappers import AtariWrapper
-from stable_baselines3.common.env_util import make_atari_env
 from stable_baselines3.common.vec_env import VecFrameStack, DummyVecEnv
 
 
@@ -30,8 +29,6 @@ def parse_args():
     parser.add_argument("--episodes", type=int, default=5, help="Number of episodes to play")
     parser.add_argument("--policy", type=str, default="CnnPolicy", choices=["CnnPolicy", "MlpPolicy"],
                         help="Policy type used during training")
-    parser.add_argument("--record", action="store_true", help="Record video of gameplay")
-    parser.add_argument("--video-dir", type=str, default="videos", help="Directory to save recorded videos")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     return parser.parse_args()
 
@@ -59,41 +56,23 @@ def resolve_model_path(args):
     return None
 
 
-def make_play_env(policy: str, render: bool, record: bool, video_dir: str, seed: int):
-    """Create an environment for playing/evaluation.
+def make_play_env(policy: str):
+    """Create an environment for playing/evaluation with GUI display.
 
     Args:
         policy: "CnnPolicy" or "MlpPolicy" — must match the trained model.
-        render: Whether to render the game visually.
-        record: Whether to record video.
-        video_dir: Directory for saving recorded videos.
-        seed: Random seed.
 
     Returns:
         A vectorized environment matching the training setup.
     """
     if policy == "CnnPolicy":
-        if record:
-            base_env = gym.make("ALE/SpaceInvaders-v5", render_mode="rgb_array")
-            os.makedirs(video_dir, exist_ok=True)
-            base_env = gym.wrappers.RecordVideo(base_env, video_folder=video_dir, name_prefix="dqn_spaceinvaders")
-            base_env = AtariWrapper(base_env)
-            env = DummyVecEnv([lambda: base_env])
-            env = VecFrameStack(env, n_stack=4)
-        else:
-            base_env = gym.make("ALE/SpaceInvaders-v5", render_mode="human")
-            base_env = AtariWrapper(base_env)
-            env = DummyVecEnv([lambda: base_env])
-            env = VecFrameStack(env, n_stack=4)
+        base_env = gym.make("ALE/SpaceInvaders-v5", render_mode="human")
+        base_env = AtariWrapper(base_env)
+        env = DummyVecEnv([lambda: base_env])
+        env = VecFrameStack(env, n_stack=4)
     else:
-        if record:
-            base_env = gym.make("ALE/SpaceInvaders-v5", obs_type="ram", render_mode="rgb_array")
-            os.makedirs(video_dir, exist_ok=True)
-            base_env = gym.wrappers.RecordVideo(base_env, video_folder=video_dir, name_prefix="dqn_spaceinvaders")
-            env = DummyVecEnv([lambda: base_env])
-        else:
-            base_env = gym.make("ALE/SpaceInvaders-v5", obs_type="ram", render_mode="human")
-            env = DummyVecEnv([lambda: base_env])
+        base_env = gym.make("ALE/SpaceInvaders-v5", obs_type="ram", render_mode="human")
+        env = DummyVecEnv([lambda: base_env])
 
     return env
 
@@ -111,7 +90,6 @@ def main():
     print(f"  Model:    {model_path}")
     print(f"  Policy:   {args.policy}")
     print(f"  Episodes: {args.episodes}")
-    print(f"  Record:   {args.record}")
     if args.member:
         print(f"  Member:   {args.member}")
     print("=" * 60)
@@ -121,7 +99,7 @@ def main():
     model = DQN.load(model_path)
 
     # Create environment
-    env = make_play_env(args.policy, render=True, record=args.record, video_dir=args.video_dir, seed=args.seed)
+    env = make_play_env(args.policy)
 
     # Run episodes
     scores = []
@@ -146,9 +124,6 @@ def main():
     print(f"  Best Score:    {np.max(scores):.0f}")
     print(f"  Worst Score:   {np.min(scores):.0f}")
     print("-" * 40)
-
-    if args.record:
-        print(f"\nVideos saved to {args.video_dir}/")
 
     env.close()
 

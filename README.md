@@ -38,7 +38,7 @@ formative-3-deep-q-learning/
 │   ├── Cedric_lr_impact.png
 │   └── Cedric_hyperparameter_analysis.png
 ├── logs/                        # (gitignored)
-└── videos/                      # (gitignored)
+└── videos/
 ```
 
 Each member's work is namespaced under `results/<member>/` so nothing conflicts.
@@ -117,12 +117,6 @@ python play.py --member Cedric
 
 ```bash
 python play.py --model-path results/Cedric/models/exp2_model.zip
-```
-
-### Record video
-
-```bash
-python play.py --member Cedric --record --video-dir videos/
 ```
 
 ## Hyperparameter Tuning Experiments

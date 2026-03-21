@@ -12,10 +12,6 @@ models/
 logs/
 !logs/.gitkeep
 
-# Videos
-videos/
-!videos/.gitkeep
-
 # Python
 __pycache__/
 *.py[cod]
