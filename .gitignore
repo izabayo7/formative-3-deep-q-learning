@@ -33,6 +33,3 @@ Thumbs.db
 
 # TensorBoard
 runs/
-.venv/
-.venv311/
-venv/
