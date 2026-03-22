@@ -21,7 +21,7 @@ gym.register_envs(ale_py)
 
 from stable_baselines3 import DQN
 from stable_baselines3.common.atari_wrappers import AtariWrapper
-from stable_baselines3.common.callbacks import EvalCallback
+from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback, CallbackList
 from stable_baselines3.common.env_util import make_atari_env
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.vec_env import VecFrameStack, DummyVecEnv
@@ -43,6 +43,8 @@ def parse_args():
     parser.add_argument("--policy", type=str, default="CnnPolicy", choices=["CnnPolicy", "MlpPolicy"],
                         help="Policy type: CnnPolicy (pixels) or MlpPolicy (RAM)")
     parser.add_argument("--timesteps", type=int, default=500000, help="Total training timesteps")
+    parser.add_argument("--checkpoint-freq", type=int, default=10000,
+                        help="Checkpoint save frequency in environment steps")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     return parser.parse_args()
 
@@ -143,6 +145,7 @@ def main():
         "epsilon_end": args.epsilon_end,
         "epsilon_decay": args.epsilon_decay,
         "timesteps": args.timesteps,
+        "checkpoint_freq": args.checkpoint_freq,
         "seed": args.seed,
     }
     config_path = os.path.join(log_dir, "config.json")
@@ -179,6 +182,9 @@ def main():
     # Set up evaluation callback to save best model
     eval_dir = os.path.join(log_dir, "eval")
     os.makedirs(eval_dir, exist_ok=True)
+    checkpoint_dir = os.path.join(log_dir, "checkpoints")
+    os.makedirs(checkpoint_dir, exist_ok=True)
+
     eval_callback = EvalCallback(
         eval_env,
         best_model_save_path=eval_dir,
@@ -188,12 +194,19 @@ def main():
         deterministic=True,
         render=False,
     )
+    checkpoint_callback = CheckpointCallback(
+        save_freq=args.checkpoint_freq,
+        save_path=checkpoint_dir,
+        name_prefix=f"exp{args.experiment if args.experiment is not None else 'default'}_dqn",
+        save_replay_buffer=True,
+    )
+    callbacks = CallbackList([eval_callback, checkpoint_callback])
 
     # Train the agent
     print(f"\nStarting training for {args.timesteps} timesteps...\n")
     model.learn(
         total_timesteps=args.timesteps,
-        callback=eval_callback,
+        callback=callbacks,
         log_interval=100,
         tb_log_name="DQN_SpaceInvaders",
     )
@@ -229,6 +242,7 @@ def main():
     print(f"  Model:          {dirs['model_path']}.zip")
     print(f"  Best model:     {best_member_model}")
     print(f"  Logs:           {log_dir}/")
+    print(f"  Checkpoints:    {checkpoint_dir}/ (every {args.checkpoint_freq} steps)")
     print(f"  TensorBoard:    tensorboard --logdir {log_dir}")
     print("=" * 60)
 
