@@ -1,0 +1,11 @@
+Experiment,Member Name,Policy,lr,gamma,batch_size,epsilon_start,epsilon_end,epsilon_decay,Mean Reward,Std Reward,Noted Behavior
+1,Irais,CnnPolicy,0.0001,0.99,32,1,0.05,0.1,247.5,79.16,Baseline run; stable but modest performance with consistent rewards
+2,Irais,CnnPolicy,0.0002,0.99,32,1,0.05,0.1,415.5,123.36,BEST MODEL - Doubling lr from baseline gave a huge performance jump; agent learned effective shooting patterns
+3,Irais,CnnPolicy,0.0003,0.99,32,1,0.05,0.1,245,153.3,Higher lr caused instability; high variance and performance dropped back to baseline level
+4,Irais,CnnPolicy,0.0002,0.995,32,1,0.05,0.1,322.5,166.62,Higher gamma hurt performance; agent over-valued future rewards leading to suboptimal immediate decisions
+5,Irais,CnnPolicy,0.0002,0.99,32,1,0.02,0.1,407,147.74,Lower epsilon floor performed well but slightly below best; less random play did not improve final score
+6,Irais,CnnPolicy,0.0002,0.99,64,1,0.05,0.1,342,159.2,Larger batch slowed learning; fewer updates per timestep reduced performance compared to batch=32
+7,Irais,CnnPolicy,0.0002,0.99,32,1,0.05,0.2,327.5,223.68,Slower epsilon decay caused too much exploration; highest variance observed across all experiments
+8,Irais,CnnPolicy,0.0002,0.995,32,1,0.02,0.1,239.5,123.84,Combining higher gamma and lower epsilon floor hurt performance; the two changes compounded negatively
+9,Irais,CnnPolicy,0.0002,0.99,32,1,0.05,0.08,415.5,123.36,Tied best model exactly; slightly faster decay works equally well confirming robustness around epsilon_decay=0.08-0.1
+10,Irais,CnnPolicy,0.0002,0.99,32,1,0.05,0.12,340,79.31,Slightly slower decay than best; lowest variance of mid-range experiments but modest mean reward
