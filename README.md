@@ -186,6 +186,31 @@ Each team member runs 10 experiments with different hyperparameter configuration
 
 ---
 
+### Pauline's Experiments
+
+| Exp # | lr | gamma | batch_size | epsilon_start | epsilon_end | epsilon_decay | Noted Behavior | Mean Reward |
+|-------|------|-------|------------|---------------|-------------|---------------|----------------|-------------|
+| 1 | 2e-4 | 0.99 | 32 | 1.0 | 0.05 | 0.10 | Baseline run with balanced exploration; learned moderate survival and shooting behavior | 225.50 +/- 114.75 |
+| 2 | 4e-4 | 0.99 | 32 | 1.0 | 0.03 | 0.10 | Higher learning rate with lower epsilon end improved early score consistency | 240.00 +/- 124.60 |
+| 4 | 5e-4 | 0.99 | 32 | 1.0 | 0.05 | 0.10 | Rerun with stronger CNN setup improved reward and reduced variance significantly | 246.50 +/- 59.12 |
+| 5 | 6e-5 | 0.995 | 64 | 1.0 | 0.05 | 0.20 | Conservative learning rate with high gamma produced stable long-term play | 277.50 +/- 81.83 |
+| 6 | 3e-4 | 0.96 | 128 | 1.0 | 0.10 | 0.10 | Larger batch remained effective but with higher variance | 281.50 +/- 189.04 |
+| 7 | 9e-5 | 0.99 | 48 | 1.0 | 0.02 | 0.08 | MLP run: moderate score with lower variance than most CNN runs | 194.00 +/- 93.03 |
+| 8 | 5e-4 | 0.985 | 96 | 1.0 | 0.05 | 0.06 | MLP run: faster learning but weaker final reward than top CNN configurations | 188.00 +/- 112.74 |
+| 9 | 2.5e-4 | 0.975 | 32 | 1.0 | 0.07 | 0.18 | Strong CNN configuration; good reward with balanced LR and longer exploration | 379.00 +/- 145.60 |
+| 10 | 7e-5 | 0.999 | 64 | 1.0 | 0.04 | 0.14 | MLP policy on RAM state underperformed CNN on this task | 170.50 +/- 53.97 |
+| 14 | 2.5e-4 | 0.975 | 32 | 1.0 | 0.07 | 0.18 | **Current best.** Extended training to 100k timesteps improved shooting behavior and achieved the top reward so far | 424.00 +/- 132.30 |
+
+**Best model (current):** Experiment 14 (lr=2.5e-4, gamma=0.975, batch=32, timesteps=100000) — saved as `results/Pauline/best_model.zip`
+
+#### Pauline's Key Insights
+
+- **Training duration was critical.** Using the same hyperparameters as Exp 9 but extending training to 100k steps (Exp 14) significantly improved outcomes.
+- **The Exp 9 hyperparameter mix is robust.** lr=2.5e-4, gamma=0.975, and epsilon_decay=0.18 remained strong when given enough timesteps.
+- **CNN continues to outperform MLP** for Space Invaders in this project, especially for consistent shooting behavior.
+
+---
+
 <!-- TEMPLATE FOR OTHER GROUP MEMBERS:
 1. Run your 10 experiments:
    python train.py --member YourName --experiment 1 --lr 1e-4 --gamma 0.99 --batch-size 32 --timesteps 100000
@@ -235,7 +260,8 @@ https://github.com/izabayo7/formative-3-deep-q-learning/blob/main/videos/irais_g
 ## Team Members
 
 - **Cedric Izabayo** — 10 CNN experiments, best model (Exp 2, reward 423.0), MLP comparison
- **Irais ICYEZA GATORE** — 10 CNN experiments, best model (Exp 2, reward 415.0), MLP comparison
+- **Irais ICYEZA GATORE** — 10 CNN experiments, best model (Exp 2, reward 415.5), MLP comparison
+- **Pauline** — CNN/MLP experiments plus extended training, current best model (Exp 14, reward 424.0)
 
 <!-- Add other group members below -->
 
