@@ -159,6 +159,33 @@ Each team member runs 10 experiments with different hyperparameter configuration
 
 ---
 
+### Irais's Experiments
+
+| Exp # | lr | gamma | batch_size | epsilon_start | epsilon_end | epsilon_decay | Noted Behavior | Mean Reward |
+|-------|------|-------|------------|---------------|-------------|---------------|----------------|-------------|
+| 1 | 1e-4 | 0.99 | 32 | 1.0 | 0.05 | 0.1 | Baseline run; stable but modest performance with consistent rewards | 247.50 +/- 79.16 |
+| 2 | 2e-4 | 0.99 | 32 | 1.0 | 0.05 | 0.1 | **Best performer.** Doubling lr from baseline gave a huge performance jump; agent learned effective shooting and positioning patterns | 415.50 +/- 123.36 |
+| 3 | 3e-4 | 0.99 | 32 | 1.0 | 0.05 | 0.1 | Higher lr caused instability; high variance and performance dropped back to baseline level | 245.00 +/- 153.30 |
+| 4 | 2e-4 | 0.995 | 32 | 1.0 | 0.05 | 0.1 | Higher gamma hurt performance; agent over-valued future rewards leading to suboptimal immediate decisions | 322.50 +/- 166.62 |
+| 5 | 2e-4 | 0.99 | 32 | 1.0 | 0.02 | 0.1 | Lower epsilon floor performed well but slightly below best; less random play did not improve final score | 407.00 +/- 147.74 |
+| 6 | 2e-4 | 0.99 | 64 | 1.0 | 0.05 | 0.1 | Larger batch slowed learning; fewer updates per timestep reduced performance compared to batch=32 | 342.00 +/- 159.20 |
+| 7 | 2e-4 | 0.99 | 32 | 1.0 | 0.05 | 0.2 | Slower epsilon decay caused too much exploration; highest variance observed across all experiments | 327.50 +/- 223.68 |
+| 8 | 2e-4 | 0.995 | 32 | 1.0 | 0.02 | 0.1 | **Worst performer.** Combining higher gamma and lower epsilon floor compounded negatively; worst result when using best lr | 239.50 +/- 123.84 |
+| 9 | 2e-4 | 0.99 | 32 | 1.0 | 0.05 | 0.08 | Tied best model exactly; slightly faster decay works equally well confirming robustness around epsilon_decay=0.08–0.1 | 415.50 +/- 123.36 |
+| 10 | 2e-4 | 0.99 | 32 | 1.0 | 0.05 | 0.12 | Slightly slower decay than best; lowest variance of mid-range experiments but modest mean reward | 340.00 +/- 79.31 |
+
+**Best model:** Experiment 2 (lr=2e-4, gamma=0.99, batch=32) — saved as `results/Irais/best_model.zip`
+
+
+#### Irais's Key Insights
+
+- **Learning rate is the most impactful hyperparameter.** lr=2e-4 (Exp 2) hit the sweet spot — large enough to accelerate learning beyond the baseline, but not so aggressive as to cause instability. lr=3e-4 (Exp 3) was enough to destabilize training, showing how sensitive DQN is to lr in this range.
+- **Gamma (discount factor):** gamma=0.99 consistently outperformed gamma=0.995. Space Invaders rewards long-term survival, but too high a gamma caused the agent to over-prioritize distant future rewards at the expense of immediate scoring opportunities.
+- **Epsilon decay sweet spot is narrow.** Exp 7 (decay=0.2) explored too long and produced the highest variance across all experiments. Exps 2 and 9 (decay=0.1 and 0.08) both tied for best, confirming the optimal range is around 0.08–0.1.
+- **Batch size:** Smaller batches (32) consistently outperformed batch=64. More frequent weight updates within the same training budget allowed the agent to learn faster and more stably.
+
+---
+
 <!-- TEMPLATE FOR OTHER GROUP MEMBERS:
 1. Run your 10 experiments:
    python train.py --member YourName --experiment 1 --lr 1e-4 --gamma 0.99 --batch-size 32 --timesteps 100000
@@ -197,6 +224,10 @@ Each team member runs 10 experiments with different hyperparameter configuration
 
 https://github.com/izabayo7/formative-3-deep-q-learning/blob/main/videos/Cedric_gameplay.mp4
 
+### Irais's Gameplay
+
+https://github.com/izabayo7/formative-3-deep-q-learning/blob/main/videos/irais_gameplay.mp4
+
 <!-- Other members: add your gameplay video below -->
 <!-- ### MemberName's Gameplay -->
 <!-- https://github.com/izabayo7/formative-3-deep-q-learning/blob/main/videos/MemberName_gameplay.mp4 -->
@@ -204,6 +235,8 @@ https://github.com/izabayo7/formative-3-deep-q-learning/blob/main/videos/Cedric_
 ## Team Members
 
 - **Cedric Izabayo** — 10 CNN experiments, best model (Exp 2, reward 423.0), MLP comparison
+ **Irais ICYEZA GATORE** — 10 CNN experiments, best model (Exp 2, reward 415.0), MLP comparison
+
 <!-- Add other group members below -->
 
 ## References
