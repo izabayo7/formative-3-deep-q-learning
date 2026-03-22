@@ -2,7 +2,7 @@ Experiment,Member Name,Policy,lr,gamma,batch_size,epsilon_start,epsilon_end,epsi
 1,Pauline,CnnPolicy,2e-4,0.99,32,1.0,0.05,0.10,225.50,114.75,"Baseline run with balanced exploration; learned moderate survival and shooting behavior"
 2,Pauline,CnnPolicy,4e-4,0.99,32,1.0,0.03,0.10,240.00,124.60,"Higher learning rate with lower epsilon_end improved early score consistency"
 3,Pauline,CnnPolicy,8e-4,0.98,64,1.0,0.05,0.12,116.00,80.06,"Learning was unstable; likely too aggressive LR with lower gamma and larger batch"
-4,Pauline,CnnPolicy,1.5e-4,0.97,32,1.0,0.08,0.15,132.00,115.24,"More short-term policy with longer exploration led to weaker reward growth"
+4,Pauline,CnnPolicy,5e-4,0.99,32,1.0,0.05,0.10,246.50,59.12,"Rerun with stronger CNN setup improved reward and reduced variance significantly"
 5,Pauline,CnnPolicy,6e-5,0.995,64,1.0,0.05,0.20,277.50,81.83,"Strong reward with conservative LR and high gamma; stable long-term play but not top overall"
 6,Pauline,CnnPolicy,3e-4,0.96,128,1.0,0.10,0.10,281.50,189.04,"Larger batch (128) reduced variance but learning remained stable and effective"
 7,Pauline,MlpPolicy,9e-5,0.99,48,1.0,0.02,0.08,194.00,93.03,"Real MLP run: moderate score with lower variance; still below top CNN performance"

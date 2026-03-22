@@ -29,8 +29,33 @@ def parse_args():
     parser.add_argument("--episodes", type=int, default=5, help="Number of episodes to play")
     parser.add_argument("--policy", type=str, default="CnnPolicy", choices=["CnnPolicy", "MlpPolicy"],
                         help="Policy type used during training")
+    parser.add_argument(
+        "--score-mode",
+        type=str,
+        default="game",
+        choices=["game", "clipped"],
+        help="Scoring mode: game=raw Atari points, clipped=training-style clipped rewards",
+    )
+    parser.add_argument(
+        "--debug-actions",
+        action="store_true",
+        help="Print per-episode action usage so you can verify if FIRE actions are chosen",
+    )
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     return parser.parse_args()
+
+
+def get_action_name(action_id: int) -> str:
+    """Map common SpaceInvaders action IDs to readable labels."""
+    mapping = {
+        0: "NOOP",
+        1: "FIRE",
+        2: "RIGHT",
+        3: "LEFT",
+        4: "RIGHTFIRE",
+        5: "LEFTFIRE",
+    }
+    return mapping.get(action_id, f"ACTION_{action_id}")
 
 
 def resolve_model_path(args):
@@ -56,7 +81,7 @@ def resolve_model_path(args):
     return None
 
 
-def make_play_env(policy: str):
+def make_play_env(policy: str, score_mode: str):
     """Create an environment for playing/evaluation with GUI display.
 
     Args:
@@ -67,7 +92,11 @@ def make_play_env(policy: str):
     """
     if policy == "CnnPolicy":
         base_env = gym.make("ALE/SpaceInvaders-v5", render_mode="human")
-        base_env = AtariWrapper(base_env)
+        base_env = AtariWrapper(
+            base_env,
+            terminal_on_life_loss=False,
+            clip_reward=(score_mode == "clipped"),
+        )
         env = DummyVecEnv([lambda: base_env])
         env = VecFrameStack(env, n_stack=4)
     else:
@@ -89,17 +118,18 @@ def main():
     print("=" * 60)
     print(f"  Model:    {model_path}")
     print(f"  Policy:   {args.policy}")
+    print(f"  Scoring:  {args.score_mode}")
     print(f"  Episodes: {args.episodes}")
     if args.member:
         print(f"  Member:   {args.member}")
     print("=" * 60)
 
-    # Load the trained model
-    print("\nLoading model...")
-    model = DQN.load(model_path)
+    # Create environment first so the model can attach to matching wrappers
+    env = make_play_env(args.policy, args.score_mode)
 
-    # Create environment
-    env = make_play_env(args.policy)
+    # Load the trained model and bind it to this env
+    print("\nLoading model...")
+    model = DQN.load(model_path, env=env)
 
     # Run episodes
     scores = []
@@ -108,15 +138,22 @@ def main():
         done = False
         total_reward = 0
         steps = 0
+        action_counts = {}
 
         while not done:
             action, _ = model.predict(obs, deterministic=True)
+            action_id = int(action[0])
+            action_counts[action_id] = action_counts.get(action_id, 0) + 1
             obs, reward, done, info = env.step(action)
-            total_reward += reward[0]
+            total_reward += float(reward[0])
             steps += 1
 
         scores.append(total_reward)
         print(f"  Episode {episode}: Score = {total_reward:.0f} ({steps} steps)")
+        if args.debug_actions:
+            sorted_actions = sorted(action_counts.items(), key=lambda x: x[1], reverse=True)
+            readable = ", ".join([f"{get_action_name(a)}={c}" for a, c in sorted_actions])
+            print(f"    Actions: {readable}")
 
     # Print summary
     print("\n" + "-" * 40)
