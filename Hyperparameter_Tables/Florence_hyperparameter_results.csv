@@ -1,0 +1,12 @@
+Experiment,Member Name,Policy,lr,gamma,batch_size,epsilon_start,epsilon_end,epsilon_decay,Mean Reward,Std Reward,Noted Behavior
+1,Florence,CnnPolicy,0.0001,0.99,32,1,0.05,0.1,397.5,140.38,BEST MODEL - Baseline configuration proved most stable; agent learned consistent shooting and movement patterns with the highest mean reward
+2,Florence,CnnPolicy,0.0001,0.99,32,1,0.2,0.1,122.0,63.69,WORST CNN - High epsilon floor of 0.2 kept agent 20% random throughout; too much randomness prevented consistent exploitation of learned strategies
+3,Florence,CnnPolicy,0.0001,0.99,32,1,0.0,0.1,202.0,98.09,Fully greedy at end; removing the exploration floor entirely hurt performance - agent committed too hard to early suboptimal strategies
+4,Florence,CnnPolicy,0.0001,0.99,32,1,0.15,0.05,157.0,106.89,Fast decay to a high floor; snapping to exploitation quickly while staying 15% random compounded negatively
+5,Florence,CnnPolicy,0.0001,0.999,32,1,0.05,0.1,283.0,113.74,Very high gamma caused agent to over-prioritise distant future rewards; performed better than most epsilon experiments but below baseline
+6,Florence,CnnPolicy,0.0001,0.99,16,1,0.05,0.1,209.5,58.33,Small batch of 16 introduced noisy gradient updates; high noise from tiny batches limited learning quality
+7,Florence,CnnPolicy,0.0005,0.99,16,1,0.05,0.1,138.0,77.05,High lr combined with tiny batch caused instability; noisiest CNN experiment - frequent updates on small batches caused weights to oscillate
+8,Florence,MlpPolicy,0.0005,0.99,64,1,0.05,0.1,340.5,123.72,BEST MLP - Higher lr helped MLP learn faster from RAM observations; larger batch stabilised updates giving the best MLP result
+9,Florence,MlpPolicy,0.0001,0.99,32,1,0.05,0.1,292.5,83.82,MLP baseline with more timesteps; lower lr slowed learning from RAM state - confirmed MLP needs higher lr than CNN to perform well
+10,Florence,MlpPolicy,0.0005,0.99,64,1,0.05,0.1,180.0,0.0,std_reward=0.0 suggests all evaluation episodes scored identically - agent likely converged to a degenerate fixed strategy with no variation
+11,Florence,CnnPolicy,0.0002,0.99,32,1,0.02,0.08,206.0,127.26,Near-zero epsilon floor with slightly faster decay; performed below baseline - 100k timesteps was insufficient for this config to fully converge
