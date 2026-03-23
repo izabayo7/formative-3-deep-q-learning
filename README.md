@@ -210,6 +210,33 @@ Each team member runs 10 experiments with different hyperparameter configuration
 - **CNN continues to outperform MLP** for Space Invaders in this project, especially for consistent shooting behavior.
 
 ---
+### Florence's Experiments
+
+| Exp # | lr | gamma | batch_size | epsilon_start | epsilon_end | epsilon_decay | Policy | Noted Behavior | Mean Reward |
+|-------|------|-------|------------|---------------|-------------|---------------|--------|----------------|-------------|
+| 1 | 1e-4 | 0.99 | 32 | 1.0 | 0.05 | 0.1 | CNN | **Best performer.** Baseline configuration proved most stable; agent learned consistent shooting and movement patterns with the highest mean reward | 397.50 +/- 140.38 |
+| 2 | 1e-4 | 0.99 | 32 | 1.0 | 0.2 | 0.1 | CNN | **Worst CNN performer.** High epsilon floor of 0.2 kept agent 20% random throughout; too much randomness prevented consistent exploitation of learned strategies | 122.00 +/- 63.69 |
+| 3 | 1e-4 | 0.99 | 32 | 1.0 | 0.0 | 0.1 | CNN | Fully greedy at end; removing the exploration floor entirely hurt performance — agent committed too hard to early suboptimal strategies | 202.00 +/- 98.09 |
+| 4 | 1e-4 | 0.99 | 32 | 1.0 | 0.15 | 0.05 | CNN | Fast decay to a high floor; snapping to exploitation quickly while staying 15% random compounded negatively — both changes hurt independently | 157.00 +/- 106.89 |
+| 5 | 1e-4 | 0.999 | 32 | 1.0 | 0.05 | 0.1 | CNN | Very high gamma caused agent to over-prioritise distant future rewards; performed better than most epsilon experiments but below baseline | 283.00 +/- 113.74 |
+| 6 | 1e-4 | 0.99 | 16 | 1.0 | 0.05 | 0.1 | CNN | Small batch of 16 introduced noisy gradient updates; slightly better than fully greedy (Exp 3) but high noise from tiny batches limited learning quality | 209.50 +/- 58.33 |
+| 7 | 5e-4 | 0.99 | 16 | 1.0 | 0.05 | 0.1 | CNN | High lr combined with tiny batch caused instability; noisiest CNN experiment — frequent updates on small batches caused the weights to oscillate | 138.00 +/- 77.05 |
+| 8 | 5e-4 | 0.99 | 64 | 1.0 | 0.05 | 0.1 | MLP | **Best MLP performer.** Higher lr helped MLP learn faster from RAM observations; larger batch stabilised updates giving the best MLP result | 340.50 +/- 123.72 |
+| 9 | 1e-4 | 0.99 | 32 | 1.0 | 0.05 | 0.1 | MLP | MLP baseline with more timesteps; lower lr slowed learning from RAM state — confirmed MLP needs a higher lr than CNN to perform well | 292.50 +/- 83.82 |
+| 10 | 5e-4 | 0.99 | 64 | 1.0 | 0.05 | 0.1 | MLP | std_reward=0.0 suggests all 10 evaluation episodes scored identically — agent likely converged to a repetitive fixed strategy with no variation | 180.00 +/- 0.00 |
+| 11 | 2e-4 | 0.99 | 32 | 1.0 | 0.02 | 0.08 | CNN | Near-zero epsilon floor with slightly faster decay; performed below baseline despite tuned settings — suggests 100k timesteps was insufficient for this config to converge | 206.00 +/- 127.26 |
+
+**Best model:** Experiment 1 (lr=1e-4, gamma=0.99, batch=32, eps_end=0.05, CnnPolicy) — saved as `results/Florence/best_model.zip`
+
+#### Florence's Key Insights
+
+- **Epsilon end (exploration floor) is the most impactful hyperparameter in my experiments.** Exp 2 (eps_end=0.2) was my worst CNN result at 122.0 — keeping the agent 20% random permanently prevents it from consistently exploiting what it learned. Exp 3 (eps_end=0.0) also underperformed, showing that some randomness at the end is actually beneficial. The default 0.05 floor in Exp 1 was optimal.
+- **Baseline settings (Exp 1) were hard to beat at 100k timesteps.** Most of my tuning experiments used fewer timesteps than the baseline (100k vs 200k), which likely explains why Exp 1 dominated — the other configs may have needed more training time to show their true potential.
+- **Batch size of 16 consistently hurt performance.** Both Exp 6 and Exp 7 used batch=16 and scored below average. Very small batches produce noisy gradient estimates that destabilise learning, especially for CNN policy processing pixel frames.
+- **MLP surprised with competitive performance.** Exp 8 (MLP, lr=5e-4, batch=64) scored 340.5 — well above several CNN experiments. MLP benefits from a higher learning rate than CNN since it processes compact 128-byte RAM rather than pixel frames. The right lr matters more than the architecture choice alone.
+- **Exp 10's std_reward of 0.0 is a red flag.** Identical scores across all 10 evaluation episodes means the agent locked into one repetitive behaviour — likely a degenerate strategy like always firing in the same spot. This suggests the MLP with these settings overfit to a narrow policy.
+
+
 
 <!-- TEMPLATE FOR OTHER GROUP MEMBERS:
 1. Run your 10 experiments:
@@ -223,6 +250,7 @@ Each team member runs 10 experiments with different hyperparameter configuration
 
 4. Play your best model: python play.py --member YourName
 -->
+
 
 ## MLP vs CNN Comparison
 
@@ -262,6 +290,7 @@ https://github.com/izabayo7/formative-3-deep-q-learning/blob/main/videos/irais_g
 - **Cedric Izabayo** — 10 CNN experiments, best model (Exp 2, reward 423.0), MLP comparison
 - **Irais ICYEZA GATORE** — 10 CNN experiments, best model (Exp 2, reward 415.5), MLP comparison
 - **Pauline** — CNN/MLP experiments plus extended training, current best model (Exp 14, reward 424.0)
+- **Florence** - CNN/MLP 11 experiments best model (Exp 11, reward 525)
 
 <!-- Add other group members below -->
 

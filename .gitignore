@@ -34,3 +34,12 @@ Thumbs.db
 
 # TensorBoard
 runs/
+
+#virtual environmenat
+rl-env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+rl-env-311
