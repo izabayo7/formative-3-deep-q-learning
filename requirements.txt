@@ -7,3 +7,4 @@ tensorboard
 opencv-python
 matplotlib
 pandas
+pygame
